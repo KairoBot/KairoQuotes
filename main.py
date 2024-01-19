@@ -1,6 +1,6 @@
 import os
 import slack_sdk
-from flask import Flask
+#from flask import Flask
 from keep_alive import keep_alive
 import requests
 import json
@@ -10,7 +10,7 @@ from datetime import time, timedelta, datetime, date
 
 slackToken = os.environ.get('slackToken')
 #keep_alive has to come before the client server
-keep_alive()
+#keep_alive()
 client = slack_sdk.WebClient(slackToken)
 
 
