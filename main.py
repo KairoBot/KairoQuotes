@@ -24,7 +24,7 @@ def get_quote():
   quote = json_data[0]['q'] + " -" + json_data[0]['a']
   return (quote)
 
-print(get_quote)
+print(get_quote())
 '''
 def post_RealMessage():
   client.chat_postMessage(channel='#kairo-motivational-corner',
