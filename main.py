@@ -8,7 +8,7 @@
 #import time as tim
 #from datetime import time, timedelta, datetime, date
 
-slackToken = os.environ['slackToken']
+slackToken = os.environ.get('slackToken')
 #keep_alive has to come before the client server
 keep_alive()
 client = slack_sdk.WebClient(slackToken)
