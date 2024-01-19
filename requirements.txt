@@ -1,5 +1,4 @@
 requests==2.26.0
 slack-sdk==3.10.0
 Flask==2.0.2
-keep_alive==0.5.7
 schedule==1.1.0
