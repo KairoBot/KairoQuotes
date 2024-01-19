@@ -31,9 +31,9 @@ def post_RealMessage():
   #log that we posted the message on this date
   str = datetime.strftime(date.today(), "%m/%d/%Y")
   print("posting real message: " + str)
-  File_Object2 = open("lastRunDate.txt", "w")
-  File_Object2.write(str)
-  File_Object2.close()
+  #File_Object2 = open("lastRunDate.txt", "w")
+  #File_Object2.write(str)
+  #File_Object2.close()
 
 
 def checkIfMessageWasPosted():
@@ -66,8 +66,8 @@ def post_TestMessage():
 
 #schedule.every().saturday.at("00:40").do(post_SpookyMessage)
 schedule.every().day.at("16:00").do(post_RealMessage)
-schedule.every(1).minute.do(checkIfMessageWasPosted)
-schedule.every(15).minutes.do(post_TestMessage)
+#schedule.every(1).minute.do(checkIfMessageWasPosted)
+#schedule.every(15).minutes.do(post_TestMessage)
 post_TestMessage()
 while True:
   schedule.run_pending()
