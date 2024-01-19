@@ -1,9 +1,6 @@
 import os
 import slack_sdk
-from pathlib import Path
-from dotenv import load_dotenv
 from flask import Flask
-from replit import db
 from keep_alive import keep_alive
 import requests
 import json
