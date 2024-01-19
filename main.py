@@ -17,9 +17,11 @@ client = slack_sdk.WebClient(slackToken)
 '''def alive_check():
   client.chat_postMessage(channel='bot-testing', text=get_quote())
 '''
+
 def post_RealMessage():
-  client.chat_postMessage(channel='#kairo-motivational-corner',
-                          text=get_quote())
+  client.chat_postMessage(channel='#kairo-motivational-corner',text=get_quote())
+
+
 def get_quote():
   response = requests.get('https://zenquotes.io/api/random')
   json_data = json.loads(response.text)
