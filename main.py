@@ -1,5 +1,5 @@
 import os
-import slack
+import slack_sdk
 from flask import Flask
 from keep_alive import keep_alive
 import requests
