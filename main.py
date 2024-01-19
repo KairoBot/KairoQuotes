@@ -1,7 +1,7 @@
 import os
 import slack_sdk
 #from flask import Flask
-from keep_alive import keep_alive
+#from keep_alive import keep_alive
 import requests
 import json
 import schedule
