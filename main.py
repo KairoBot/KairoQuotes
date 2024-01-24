@@ -24,10 +24,9 @@ def send_slack_message(webhook_url, message):
 
 def send_messages():
     # Send message to channel 1 every half minute
-    send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Message to Channel 1 - 15s mark')
-    time.sleep(15)
-    send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Message to Channel 1 - 45s mark')
-    time.sleep(15)
+    if now_minute % 15 == 0:
+        # Send message to channel 1 every 15 minutes
+        send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Message to Channel 1 - Every 15 minutes')
 
     # Send message to channel 2 at 11:00am CST every day
     now_cst = datetime.now(CST)
