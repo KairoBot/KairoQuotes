@@ -52,8 +52,12 @@ def send_messages():
     now_cst = datetime.now(CST)
     if now_cst.hour == 11 and now_cst.minute == 0:
         if not channel_2_sent_today:
-            send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Message to Channel 2 - 11:00am CST')
+            send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
             channel_2_sent_today = True
+    # Send backup message if the flag is false and it's between 12 CST and midnight
+    if not channel_1_sent_today and now_cst.hour >= 12:
+        send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Backup Message to Channel 1')
+
 
 if __name__ == "__main__":
     # Schedule the task to run every minute
