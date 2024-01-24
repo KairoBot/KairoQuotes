@@ -8,6 +8,10 @@ from datetime import datetime, timedelta, timezone
 CHANNEL_1_WEBHOOK_URL = os.environ.get('TEST_WEBHOOK_URL')
 CHANNEL_2_WEBHOOK_URL = os.environ.get('QUOTE_WEBHOOK_URL')
 
+# Global variables to track if messages were sent today
+channel_1_sent_today = False
+channel_2_sent_today = False
+
 # Central Standard Time (CST) timezone
 CST = timezone(timedelta(hours=-6))
 def get_quote():
@@ -22,7 +26,7 @@ def send_slack_message(webhook_url, message):
     }
     requests.post(webhook_url, json=payload)
 
-def send_messages():
+def send_messages_old():
     # Send message to channel 1 every half minute
     if now_minute % 15 == 0:
         # Send message to channel 1 every 15 minutes
@@ -32,12 +36,35 @@ def send_messages():
     now_cst = datetime.now(CST)
     if now_cst.hour == 11 and now_cst.minute == 0:
         send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
+def send_messages():
+    global channel_1_sent_today
+    global channel_2_sent_today
+
+    # Check the current minute and send message if it's a multiple of 15
+    now_minute = datetime.now().minute
+    if now_minute % 15 == 0:
+        # Send message to channel 1 every 15 minutes if not sent today
+        if not channel_1_sent_today:
+            send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Message to Channel 1 - Every 15 minutes')
+            channel_1_sent_today = True
+
+    # Send message to channel 2 at 11:00am CST every day if not sent today
+    now_cst = datetime.now(CST)
+    if now_cst.hour == 11 and now_cst.minute == 0:
+        if not channel_2_sent_today:
+            send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Message to Channel 2 - 11:00am CST')
+            channel_2_sent_today = True
 
 if __name__ == "__main__":
     # Schedule the task to run every minute
-    schedule.every(1).minutes.do(send_messages)
+    schedule.every().minute.do(send_messages)
 
     while True:
+        # Reset the flags at midnight
+        if datetime.now().hour == 0 and datetime.now().minute == 0:
+            channel_1_sent_today = False
+            channel_2_sent_today = False
+
         schedule.run_pending()
         time.sleep(1)
 
