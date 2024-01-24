@@ -6,8 +6,8 @@ import json
 from datetime import datetime, timedelta, timezone
 
 # Read Slack webhook URLs from environment variables
-CHANNEL_1_WEBHOOK_URL = os.environ.get('TEST_WEBHOOK_URL')
-CHANNEL_2_WEBHOOK_URL = os.environ.get('QUOTE_WEBHOOK_URL')
+CHANNEL_1_WEBHOOK_URL = os.environ.get('CHANNEL_1_WEBHOOK_URL')
+CHANNEL_2_WEBHOOK_URL = os.environ.get('CHANNEL_2_WEBHOOK_URL')
 
 # Central Standard Time (CST) timezone
 CST = timezone(timedelta(hours=-6))
@@ -15,13 +15,7 @@ CST = timezone(timedelta(hours=-6))
 # Global variables to track if messages were sent today
 channel_1_sent_today = False
 channel_2_sent_today = False
-
-def get_quote():
-    response = requests.get('https://zenquotes.io/api/random')
-    json_data = json.loads(response.text)
-    quote = json_data[0]['q'] + " -" + json_data[0]['a']
-    return quote
-
+channel_2_backup_sent_today = False
 
 def send_slack_message(webhook_url, message):
     payload = {
@@ -45,29 +39,31 @@ def send_messages():
     now_cst = datetime.now(CST)
     if now_cst.hour == 11 and now_cst.minute == 0:
         if not channel_2_sent_today:
-            send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
+            send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Message to Channel 2 - 11:00am CST')
             channel_2_sent_today = True
 
-    # Send backup message if the flag is false and it's between 12 CST and midnight
-    if not channel_1_sent_today and now_cst.hour >= 12:
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
-
 def send_backup_message():
-    # Call the backup message sender
-    send_messages()
+    global channel_2_backup_sent_today
+
+    # Send backup message to channel 2 if not sent today
+    now_cst = datetime.now(CST)
+    if now_cst.hour == 12 and not channel_2_backup_sent_today:
+        send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Backup Message to Channel 2')
+        channel_2_backup_sent_today = True
 
 if __name__ == "__main__":
     # Schedule the task to run every minute
     schedule.every().minute.do(send_messages)
 
-    # Schedule the backup message task to run every 15 minutes
-    schedule.every(15).minutes.do(send_backup_message)
+    # Schedule the backup message task to run once a day at 12:00pm CST
+    schedule.every().day.at("12:00").do(send_backup_message)
 
     while True:
         # Reset the flags at midnight
         if datetime.now().hour == 0 and datetime.now().minute == 0:
             channel_1_sent_today = False
             channel_2_sent_today = False
+            channel_2_backup_sent_today = False
 
         schedule.run_pending()
         time.sleep(1)
