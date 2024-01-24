@@ -2,6 +2,7 @@ import os
 import requests
 import schedule
 import time
+import json
 from datetime import datetime, timedelta, timezone
 
 # Read Slack webhook URLs from environment variables
@@ -49,7 +50,7 @@ def send_messages():
 
     # Send backup message if the flag is false and it's between 12 CST and midnight
     if not channel_1_sent_today and now_cst.hour >= 12:
-        send_slack_message(CHANNEL_1_WEBHOOK_URL, get_quote())
+        send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
 
 def send_backup_message():
     # Call the backup message sender
