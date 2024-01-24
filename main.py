@@ -6,8 +6,8 @@ import json
 from datetime import datetime, timedelta, timezone
 from flask import Flask
 # Read Slack webhook URLs from environment variables
-CHANNEL_1_WEBHOOK_URL = os.environ.get('CHANNEL_1_WEBHOOK_URL')
-CHANNEL_2_WEBHOOK_URL = os.environ.get('CHANNEL_2_WEBHOOK_URL')
+CHANNEL_1_WEBHOOK_URL = os.environ.get('TEST_WEBHOOK_URL')
+CHANNEL_2_WEBHOOK_URL = os.environ.get('QUOTE_WEBHOOK_URL')
 
 # Central Standard Time (CST) timezone
 CST = timezone(timedelta(hours=-6))
