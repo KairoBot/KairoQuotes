@@ -22,6 +22,8 @@ channel_1_sent_today = False
 channel_2_sent_today = False
 channel_2_backup_sent_today = False
 
+app = Flask(__name__)
+
 def send_slack_message(webhook_url, message):
     payload = {
         'text': message
@@ -43,7 +45,7 @@ def send_messages():
     # Send message to channel 2 at 11:00am CST every day if not sent today
     now_cst = datetime.now(CST)
     if now_cst.hour == 11 and now_cst.minute == 0:
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
+        send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Message to Channel 2 - 11:00am CST')
         channel_2_sent_today = True
 
 def send_backup_message():
@@ -51,8 +53,15 @@ def send_backup_message():
 
     # Send backup message to channel 2 if the original message wasn't sent at 11:00am
     if not channel_2_sent_today and not channel_2_backup_sent_today:
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
+        send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Backup Message to Channel 2')
         channel_2_backup_sent_today = True
+
+@app.route('/')
+def index():
+    # Endpoint to trigger the scheduled tasks
+    send_messages()
+    send_backup_message()
+    return "Tasks executed successfully!"
 
 if __name__ == "__main__":
     # Schedule the task to run every minute
@@ -61,15 +70,10 @@ if __name__ == "__main__":
     # Schedule the backup message task to run once a day at 12:00pm CST
     schedule.every().day.at("12:00").do(send_backup_message)
 
-    while True:
-        # Reset the flags at midnight
-        if datetime.now().hour == 0 and datetime.now().minute == 0:
-            channel_1_sent_today = False
-            channel_2_sent_today = False
-            channel_2_backup_sent_today = False
+    # Run the Flask app on port 5000
+    app.run(host='0.0.0.0', port=5000, debug=False)
 
-        schedule.run_pending()
-        time.sleep(1)
+
 
 '''import os
 import slack_sdk
