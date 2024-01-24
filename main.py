@@ -45,7 +45,7 @@ def send_messages():
     # Send message to channel 2 at 11:00am CST every day if not sent today
     now_cst = datetime.now(CST)
     if now_cst.hour == 11 and now_cst.minute == 0:
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Message to Channel 2 - 11:00am CST')
+        send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
         channel_2_sent_today = True
 
 def send_backup_message():
@@ -53,7 +53,7 @@ def send_backup_message():
 
     # Send backup message to channel 2 if the original message wasn't sent at 11:00am
     if not channel_2_sent_today and not channel_2_backup_sent_today:
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Backup Message to Channel 2')
+        send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
         channel_2_backup_sent_today = True
 
 @app.route('/')
