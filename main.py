@@ -32,7 +32,7 @@ def send_messages():
     # Send message to channel 2 at 11:00am CST every day
     now_cst = datetime.now(CST)
     if now_cst.hour == 11 and now_cst.minute == 0:
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Message to Channel 2 - 11:00am CST')
+        send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
 
 if __name__ == "__main__":
     # Schedule the task to run every minute
