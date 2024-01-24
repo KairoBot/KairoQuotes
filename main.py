@@ -36,7 +36,7 @@ def send_messages():
 
 if __name__ == "__main__":
     # Schedule the task to run every minute
-    schedule.every().minute.do(send_messages)
+    schedule.every(1).minutes.do(send_messages)
 
     while True:
         schedule.run_pending()
