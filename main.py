@@ -5,12 +5,6 @@ import time
 import json
 from datetime import datetime, timedelta, timezone
 from flask import Flask
-import os
-import requests
-import schedule
-import time
-from datetime import datetime, timedelta, timezone
-from flask import Flask
 
 # Read Slack webhook URLs from environment variables
 CHANNEL_1_WEBHOOK_URL = os.environ.get('CHANNEL_1_WEBHOOK_URL')
