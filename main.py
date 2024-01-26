@@ -7,11 +7,10 @@ from datetime import datetime, timedelta, timezone
 # Read Slack webhook URLs from environment variables
 CHANNEL_1_WEBHOOK_URL = os.environ.get('CHANNEL_1_WEBHOOK_URL')
 CHANNEL_2_WEBHOOK_URL = os.environ.get('CHANNEL_2_WEBHOOK_URL')
-
+# Global variable to track if Channel 2 message was sent today
+channel_2_sent_today = False
 # Central Standard Time (CST) timezone
 CST = timezone(timedelta(hours=-6))
-
-app = Flask(__name__)
 
 def send_slack_message(webhook_url, message):
     payload = {
@@ -27,8 +26,7 @@ def get_quote():
     return quote
 
 
-# Global variable to track if Channel 2 message was sent today
-channel_2_sent_today = False
+
 
 def send_messages():
     # Check the current minute and send message if it's a multiple of 15
