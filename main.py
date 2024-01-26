@@ -45,7 +45,7 @@ def send_messages():
     if now_cst.hour == 11 and now_cst.minute == 0 and not channel_2_sent_today:
         print("sendmessage2")
         quote_of_the_day = get_quote()
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, f'Message to Channel 2 - 11:00am CST: {quote_of_the_day}')
+        send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
         # Set the flag to indicate that Channel 2 message was sent today
         channel_2_sent_today = True
 
