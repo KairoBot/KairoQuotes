@@ -37,17 +37,20 @@ def send_messages():
     now_minute = datetime.now().minute
     if now_minute % 15 == 0:
         # Send message to channel 1 every 15 minutes
+        print("sendmessage1")
         send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Message to Channel 1 - Every 15 minutes')
 
     # Send message to channel 2 at 11:00am CST every day if not sent today
     now_cst = datetime.now(CST)
     if now_cst.hour == 11 and now_cst.minute == 0 and not channel_2_sent_today:
+        print("sendmessage2")
         quote_of_the_day = get_quote()
         send_slack_message(CHANNEL_2_WEBHOOK_URL, f'Message to Channel 2 - 11:00am CST: {quote_of_the_day}')
         # Set the flag to indicate that Channel 2 message was sent today
         channel_2_sent_today = True
 
 def send_backup_message():
+    print("sendmessage3")
     # Send backup message to channel 2 if the original message wasn't sent at 11:00am
     now_cst = datetime.now(CST)
     if now_cst.hour == 13 and not channel_2_sent_today:
@@ -62,6 +65,7 @@ def index():
 
 if __name__ == "__main__":
     # Schedule the task to run every minute
+    print("sendmessage4")
     schedule.every().minute.do(send_messages)
 
     # Schedule the backup message task to run once a day at 12:00pm CST
