@@ -45,6 +45,8 @@ def send_messages():
     if now_cst.hour == 11 and now_cst.minute == 0:
         send_slack_message(CHANNEL_2_WEBHOOK_URL, get_quote())
         channel_2_sent_today = True
+        channel_2_backup_sent_today = True
+
 
 def send_backup_message():
     global channel_2_backup_sent_today
