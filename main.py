@@ -18,7 +18,6 @@ def get_quote():
     return quote
 
 # Global variables to track if messages were sent today
-channel_1_sent_today = False
 channel_2_sent_today = False
 channel_2_backup_sent_today = False
 
@@ -38,9 +37,8 @@ def send_messages():
     now_minute = datetime.now().minute
     if now_minute % 15 == 0:
         # Send message to channel 1 every 15 minutes if not sent today
-        if not channel_1_sent_today:
-            send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Message to Channel 1 - Every 15 minutes')
-            channel_1_sent_today = True
+        send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Message to Channel 1 - Every 15 minutes')
+        
 
     # Send message to channel 2 at 11:00am CST every day if not sent today
     now_cst = datetime.now(CST)
