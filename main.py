@@ -8,52 +8,38 @@ from datetime import datetime, timedelta, timezone
 CHANNEL_1_WEBHOOK_URL = os.environ.get('CHANNEL_1_WEBHOOK_URL')
 CHANNEL_2_WEBHOOK_URL = os.environ.get('CHANNEL_2_WEBHOOK_URL')
 
+# Read Slack webhook URL from environment variable
+SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
+
 # Central Standard Time (CST) timezone
 CST = timezone(timedelta(hours=-6))
-
-# Global variable to track if Channel 2 message was sent today
-channel_2_sent_today = False
-
-def send_slack_message(webhook_url, message):
-    payload = {
-        'text': message
-    }
-    requests.post(webhook_url, json=payload)
-
 def get_quote():
     response = requests.get('https://zenquotes.io/api/random')
     json_data = json.loads(response.text)
     quote = json_data[0]['q'] + " -" + json_data[0]['a']
     return quote
 
-def send_messages():
-    # Send message to channel 1 every 15 minutes
-    send_slack_message(CHANNEL_1_WEBHOOK_URL, 'Message to Channel 1 - Every 15 minutes')
 
-    # Send message to channel 2 at 11:00am CST every day if not sent today
-    now_cst = datetime.now(CST)
-    if now_cst.hour == 11 and now_cst.minute == 0 and not channel_2_sent_today:
-        quote_of_the_day = get_quote()
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, f'Message to Channel 2 - 11:00am CST: {quote_of_the_day}')
-        # Set the flag to indicate that Channel 2 message was sent today
-        channel_2_sent_today = True
+def send_slack_message(message):
+    payload = {'text': message}
+    requests.post(CHANNEL_2_WEBHOOK_URL, json=payload)
 
-def send_backup_message():
-    # Send backup message to channel 2 at 12:00pm CST if the original message wasn't sent at 11:00am
+def send_daily_message():
     now_cst = datetime.now(CST)
-    if now_cst.hour == 12 and not channel_2_sent_today:
-        send_slack_message(CHANNEL_2_WEBHOOK_URL, 'Backup Message to Channel 2')
-    print("here")
+    if now_cst.hour == 11 and now_cst.minute == 0:
+        send_slack_message(get_quote())
+
+def send_uptime_message():
+    now_cst = datetime.now(CST)
+    payload = {'text': now_cst}
+    requests.post(CHANNEL_1_WEBHOOK_URL, json=payload)
+
+if __name__ == "__main__":
     # Schedule the task to run every minute
-    schedule.every().minute.do(send_messages)
-
-    # Schedule the backup message task to run once a day at 12:00pm CST
-    schedule.every().day.at("12:00").do(send_backup_message)
-
+    schedule.every().minute.do(send_daily_message)
+    schedule.every(15).minutes.do(send_uptime_message())
     while True:
         schedule.run_pending()
-        time.sleep(1)
-
 
 '''import os
 import slack_sdk
