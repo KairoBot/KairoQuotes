@@ -37,7 +37,7 @@ def send_uptime_message():
 if __name__ == "__main__":
     # Schedule the task to run every minute
     schedule.every().minute.do(send_daily_message)
-    schedule.every(15).minutes.do(send_uptime_message())
+    schedule.every(15).minutes.do(send_uptime_message)
     while True:
         schedule.run_pending()
 
