@@ -5,8 +5,8 @@ import time
 import json
 from datetime import datetime, timedelta, timezone
 # Read Slack webhook URLs from environment variables
-CHANNEL_1_WEBHOOK_URL = os.environ.get('CHANNEL_1_WEBHOOK_URL')
-CHANNEL_2_WEBHOOK_URL = os.environ.get('CHANNEL_2_WEBHOOK_URL')
+CHANNEL_1_WEBHOOK_URL = os.environ.get('TEST_WEBHOOK_URL')
+CHANNEL_2_WEBHOOK_URL = os.environ.get('QUOTE_WEBHOOK_URL')
 
 # Read Slack webhook URL from environment variable
 SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
