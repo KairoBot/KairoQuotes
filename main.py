@@ -46,7 +46,7 @@ if __name__ == "__main__":
         if uptime_message:
             send_slack_message(UPTIME_SLACK_WEBHOOK_URL, uptime_message)
 
-        time.sleep(60)
+        time.sleep(1)
 '''import os
 import slack_sdk
 from flask import Flask
