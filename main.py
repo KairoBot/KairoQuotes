@@ -35,6 +35,7 @@ def send_uptime_message():
     requests.post(CHANNEL_1_WEBHOOK_URL, json=payload)
 
 if __name__ == "__main__":
+    print("finally")
     # Schedule the task to run every minute
     schedule.every().minute.do(send_daily_message)
     schedule.every(15).minutes.do(send_uptime_message)
