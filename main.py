@@ -22,7 +22,7 @@ def get_quote():
 
 def send_slack_message(message):
     payload = {'text': message}
-    requests.post(CHANNEL_2_WEBHOOK_URL, json=payload)
+    requests.post(CHANNEL_1_WEBHOOK_URL, json=payload)
 
 def send_daily_message():
     now_cst = datetime.now(CST)
