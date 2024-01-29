@@ -9,7 +9,7 @@ CHANNEL_1_WEBHOOK_URL = os.environ.get('TEST_WEBHOOK_URL')
 CHANNEL_2_WEBHOOK_URL = os.environ.get('QUOTE_WEBHOOK_URL')
 
 # Read Slack webhook URL from environment variable
-SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
+#SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')
 
 # Central Standard Time (CST) timezone
 CST = timezone(timedelta(hours=-6))
