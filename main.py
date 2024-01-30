@@ -18,6 +18,7 @@ def send_slack_message(webhook_url, message):
     requests.post(webhook_url, json=payload)
 
 def send_daily_message():
+    time.sleep(59)
     now_cst = datetime.now(CST)
 
     # Check if it's 11:00 AM CST
@@ -30,6 +31,7 @@ def send_recurring_message():
 
     # Check if it's a 15-minute mark on the hour
     if now_minute % 15 == 0:
+        time.sleep(59)
         send_slack_message(UPTIME_SLACK_WEBHOOK_URLL, f'Recurring message at {now_minute} minute mark on the hour')
         time.sleep(59)
 
@@ -40,6 +42,8 @@ if __name__ == "__main__":
         send_daily_message()
         send_recurring_message()
         time.sleep(31)  # Sleep for 60 seconds (1 minute)
+
+
 '''import os
 import slack_sdk
 from flask import Flask
