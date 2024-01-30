@@ -38,7 +38,7 @@ if __name__ == "__main__":
     while True:
         send_daily_message()
         send_recurring_message()
-        time.sleep(1)  # Sleep for 60 seconds (1 minute)
+        time.sleep(31)  # Sleep for 60 seconds (1 minute)
 '''import os
 import slack_sdk
 from flask import Flask
