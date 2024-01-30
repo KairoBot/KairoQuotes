@@ -9,59 +9,34 @@ from datetime import datetime, timedelta, timezone
 SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')  # Channel for daily message
 UPTIME_SLACK_WEBHOOK_URL = os.environ.get('UPTIME_SLACK_WEBHOOK_URL')  # Channel for uptime messages
 
+
 # Central Standard Time (CST) timezone
 CST = timezone(timedelta(hours=-6))
-
-# Track the last time an uptime message was sent and the last time a daily message was sent
-last_uptime_message_time = None
-last_daily_message_date = None
-
-def get_quote():
-    response = requests.get('https://zenquotes.io/api/random')
-    json_data = json.loads(response.text)
-    quote = json_data[0]['q'] + " -" + json_data[0]['a']
-    return quote
 
 def send_slack_message(webhook_url, message):
     payload = {'text': message}
     requests.post(webhook_url, json=payload)
 
-def get_daily_message():
-    global last_daily_message_date
-
+def send_daily_message():
     now_cst = datetime.now(CST)
 
-    # Check if a daily message has not been sent today
-    if last_daily_message_date is None or last_daily_message_date.date() != now_cst.date():
-        last_daily_message_date = now_cst
-        return 'Daily message at 11:00am CST'
+    # Check if it's 11:00 AM CST
+    if now_cst.hour == 11 and now_cst.minute == 0:
+        send_slack_message(SLACK_CHANNEL_1_URL, 'Daily message at 11:00am CST')
 
-    return None
-
-def get_uptime_message():
-    global last_uptime_message_time
+def send_recurring_message():
     now_minute = datetime.now().minute
 
-    # Check if 15 minutes have passed since the last uptime message
-    if last_uptime_message_time is None or (datetime.now() - last_uptime_message_time).seconds >= 900:
-        last_uptime_message_time = datetime.now()
-        return f'Uptime message at {now_minute} minute mark on the hour'
-
-    return None
+    # Check if it's a 15-minute mark on the hour
+    if now_minute % 15 == 0:
+        send_slack_message(SLACK_CHANNEL_2_URL, f'Recurring message at {now_minute} minute mark on the hour')
 
 if __name__ == "__main__":
     # Run the scheduled tasks every minute
     while True:
-        daily_message = get_daily_message()
-        uptime_message = get_uptime_message()
-
-        if daily_message:
-            send_slack_message(SLACK_WEBHOOK_URL, daily_message)
-
-        if uptime_message:
-            send_slack_message(UPTIME_SLACK_WEBHOOK_URL, uptime_message)
-
-        time.sleep(1)
+        send_daily_message()
+        send_recurring_message()
+        time.sleep(31)  # Sleep for 60 seconds (1 minute)
 '''import os
 import slack_sdk
 from flask import Flask
