@@ -35,6 +35,7 @@ def send_recurring_message():
 
 if __name__ == "__main__":
     # Run the scheduled tasks every minute
+    send_recurring_message()
     while True:
         send_daily_message()
         send_recurring_message()
