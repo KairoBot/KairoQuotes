@@ -22,7 +22,7 @@ def send_daily_message():
 
     # Check if it's 11:00 AM CST
     if now_cst.hour == 11 and now_cst.minute == 0:
-        send_slack_message(SLACK_CHANNEL_1_URL, 'Daily message at 11:00am CST')
+        send_slack_message(SLACK_WEBHOOK_URL, 'Daily message at 11:00am CST')
         time.sleep(59)
 
 def send_recurring_message():
@@ -30,7 +30,7 @@ def send_recurring_message():
 
     # Check if it's a 15-minute mark on the hour
     if now_minute % 15 == 0:
-        send_slack_message(SLACK_CHANNEL_2_URL, f'Recurring message at {now_minute} minute mark on the hour')
+        send_slack_message(UPTIME_SLACK_WEBHOOK_URLL, f'Recurring message at {now_minute} minute mark on the hour')
         time.sleep(59)
 
 if __name__ == "__main__":
