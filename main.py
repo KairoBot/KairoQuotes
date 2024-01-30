@@ -23,6 +23,7 @@ def send_daily_message():
     # Check if it's 11:00 AM CST
     if now_cst.hour == 11 and now_cst.minute == 0:
         send_slack_message(SLACK_CHANNEL_1_URL, 'Daily message at 11:00am CST')
+        time.sleep(59)
 
 def send_recurring_message():
     now_minute = datetime.now().minute
@@ -30,13 +31,14 @@ def send_recurring_message():
     # Check if it's a 15-minute mark on the hour
     if now_minute % 15 == 0:
         send_slack_message(SLACK_CHANNEL_2_URL, f'Recurring message at {now_minute} minute mark on the hour')
+        time.sleep(59)
 
 if __name__ == "__main__":
     # Run the scheduled tasks every minute
     while True:
         send_daily_message()
         send_recurring_message()
-        time.sleep(31)  # Sleep for 60 seconds (1 minute)
+        time.sleep(1)  # Sleep for 60 seconds (1 minute)
 '''import os
 import slack_sdk
 from flask import Flask
