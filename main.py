@@ -6,8 +6,8 @@ import json
 from datetime import datetime, timedelta, timezone
 
 # Read Slack webhook URLs from environment variables
-SLACK_WEBHOOK_URL = os.environ.get('SLACK_WEBHOOK_URL')  # Channel for daily message
-UPTIME_SLACK_WEBHOOK_URL = os.environ.get('UPTIME_SLACK_WEBHOOK_URL')  # Channel for uptime messages
+SLACK_WEBHOOK_URL = os.environ.get('QUOTE_WEBHOOK_URL')  # Channel for daily message
+UPTIME_SLACK_WEBHOOK_URL = os.environ.get('TEST_SLACK_WEBHOOK_URL')  # Channel for uptime messages
 
 
 # Central Standard Time (CST) timezone
