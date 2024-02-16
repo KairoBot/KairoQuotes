@@ -4,6 +4,8 @@ import schedule
 import time
 import json
 from datetime import datetime, timedelta, timezone
+
+rdskghjaKIJWrgnjka
 '''
 # Read Slack webhook URLs from environment variables
 SLACK_WEBHOOK_URL = os.environ.get('QUOTE_WEBHOOK_URL')  # Channel for daily message
